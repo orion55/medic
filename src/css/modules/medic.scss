@@ -1,0 +1,19 @@
+.medic__title {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.btn.medic__btn {
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.medic__fas {
+  padding-right: 5px;
+}
+
+.medic__control-panel {
+  padding-bottom: 20px;
+}
