@@ -13,39 +13,95 @@
     <div class="row">
         <div class="col" id="medicId">
             <div class="medic__control-panel">
-                <button type="button" class="btn btn-outline-primary" id="medicAllDown"><i
+                <button type="button" class="btn btn-outline-info" id="medicAllDown"><i
                         class="fas fa-angle-double-down"></i></button>
             </div>
             <div class="accordion" id="medicAccordion">
                 <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <h2 class="mb-0">
+                    <div class="card-header medic__header" id="headingOne">
+                        <h2 class="mb-0 medic__title-card">
                             <button class="btn medic__btn" type="button" data-toggle="collapse"
                                     data-target="#collapseOne" aria-expanded="true"
                                     aria-controls="collapseOne">
-                                <i class="fas fa-chevron-down medic__fas"></i> Collapsible Group
-                                Item #1
+                                <i class="fas fa-chevron-down medic__fas"></i>10903
                             </button>
+                            <button type="button"
+                                    class="btn btn-info medic__remove-section"
+                                    title="Удалить раздел" data-id="10903"><i
+                                    class="far fa-trash-alt"></i></button>
                         </h2>
                     </div>
                     <div id="collapseOne" class="medic__panel collapse show"
                          aria-labelledby="headingOne"
                          data-parent="#medicAccordion">
                         <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                            terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-                            skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                            Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-                            single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                            helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-                            proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
-                            beer farm-to-table, raw denim aesthetic synth nesciunt you probably
-                            haven't heard of them accusamus labore sustainable VHS.
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Наименование</th>
+                                    <th scope="col">Адрес</th>
+                                    <th scope="col">Телефон</th>
+                                    <th scope="col" class="medic__cell">
+                                        <button type="button"
+                                                class="btn btn-outline-info medic__add"
+                                                title="Добавить организацию" data-id="10604483"><i
+                                                class="far fa-plus-square"></i></button>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Новое здaниe</td>
+                                    <td>г. Казань, ул. Петербургская, д. 50</td>
+                                    <td>1234</td>
+                                    <td class="medic__cell">
+                                        <button type="button"
+                                                class="btn btn-outline-info medic__edit"
+                                                title="Редактировать" data-id="10604483"><i
+                                                class="far fa-edit"></i></button>
+                                        <button type="button"
+                                                class="btn btn-outline-info medic__remove"
+                                                title="Удалить" data-id="10604483"><i
+                                                class="far fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ЖК Жеснкая консультация (Желтая Кофта)</td>
+                                    <td>Дербоград, Мира 58</td>
+                                    <td>222 72 72</td>
+                                    <td class="medic__cell">
+                                        <button type="button"
+                                                class="btn btn-outline-info medic__edit"
+                                                title="Редактировать" data-id="10604483"><i
+                                                class="far fa-edit"></i></button>
+                                        <button type="button"
+                                                class="btn btn-outline-info medic__remove"
+                                                title="Удалить" data-id="10604483"><i
+                                                class="far fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ростовская поликлиника</td>
+                                    <td>Николая Чудотворца, 19</td>
+                                    <td>+74959379992</td>
+                                    <td class="medic__cell">
+                                        <button type="button"
+                                                class="btn btn-outline-info medic__edit"
+                                                title="Редактировать" data-id="10604483"><i
+                                                class="far fa-edit"></i></button>
+                                        <button type="button"
+                                                class="btn btn-outline-info medic__remove"
+                                                title="Удалить" data-id="10604483"><i
+                                                class="far fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header" id="headingTwo">
+                    <div class="card-header medic__header" id="headingTwo">
                         <h2 class="mb-0">
                             <button class="btn collapsed medic__btn" type="button"
                                     data-toggle="collapse" data-target="#collapseTwo"
@@ -71,7 +127,7 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header" id="headingThree">
+                    <div class="card-header medic__header" id="headingThree">
                         <h2 class="mb-0">
                             <button class="btn collapsed medic__btn" type="button"
                                     data-toggle="collapse" data-target="#collapseThree"

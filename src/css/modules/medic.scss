@@ -2,9 +2,12 @@
   padding-top: 20px;
   padding-bottom: 20px;
   text-align: center;
+  color: $color-main
 }
 
 .btn.medic__btn {
+  color: white;
+
   &:focus {
     box-shadow: none;
   }
@@ -16,4 +19,22 @@
 
 .medic__control-panel {
   padding-bottom: 20px;
+}
+
+.medic__panel td {
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.medic__cell {
+  text-align: center;
+}
+
+.medic__header {
+  background-color: $color-main;
+}
+
+.medic__title-card {
+  display: flex;
+  justify-content: space-between;
 }

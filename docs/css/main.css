@@ -6,18 +6,23 @@ body {
 
 ::-moz-selection {
 	color: white;
-	background-color: #007bff;
+	background-color: #17a2b8;
 }
 
 ::selection {
 	color: white;
-	background-color: #007bff;
+	background-color: #17a2b8;
 }
 
 .medic__title {
 	padding-top: 20px;
 	padding-bottom: 20px;
 	text-align: center;
+	color: #17a2b8;
+}
+
+.btn.medic__btn {
+	color: white;
 }
 
 .btn.medic__btn:focus {
@@ -30,5 +35,25 @@ body {
 
 .medic__control-panel {
 	padding-bottom: 20px;
+}
+
+.medic__panel td {
+	cursor: pointer;
+	vertical-align: middle;
+}
+
+.medic__cell {
+	text-align: center;
+}
+
+.medic__header {
+	background-color: #17a2b8;
+}
+
+.medic__title-card {
+	display: -webkit-box;
+	display: flex;
+	-webkit-box-pack: justify;
+	justify-content: space-between;
 }
 
