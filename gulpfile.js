@@ -56,7 +56,7 @@ gulp.task('html', done => {
 gulp.task('clean', done => {
   return gulp.src('docs/*', {read: false})
     .pipe(clean())
-  done()
+  // done()
 })
 
 gulp.task('copy-libs', done => {
@@ -69,6 +69,9 @@ gulp.task('copy-libs', done => {
 
   gulp.src(['node_modules/@fortawesome/fontawesome-free/webfonts/*.*'])
     .pipe(gulp.dest('docs/webfonts'))
+
+  gulp.src(['src/json/*.*'])
+    .pipe(gulp.dest('docs/json'))
 
   gulp.src(['node_modules/bootstrap/dist/css/bootstrap.min.css', 'node_modules/@fortawesome/fontawesome-free/css/all.min.css'])
     .pipe(concat('vendor.min.css'))

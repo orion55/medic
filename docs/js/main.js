@@ -1,5 +1,12 @@
 "use strict";
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var localst = function localst() {
+  _classCallCheck(this, localst);
+};
+"use strict";
+
 $(document).ready(function () {
   new Medic({
     idMedic: 'medicId'

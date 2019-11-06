@@ -38,3 +38,33 @@
   display: flex;
   justify-content: space-between;
 }
+
+.medic__card {
+  padding: 0;
+}
+
+.medic__table {
+  margin-bottom: 0;
+}
+
+.medic-col-1 {
+  width: 40%;
+}
+
+.medic-col-2 {
+  width: 30%;
+}
+
+.medic-col-3 {
+  width: 30%;
+}
+
+.medic__header td {
+  cursor: pointer;
+  vertical-align: middle;
+  color: white;
+}
+
+.table-hover tbody tr:hover td {
+  text-decoration: underline;
+}
