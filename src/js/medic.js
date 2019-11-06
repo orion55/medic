@@ -17,6 +17,18 @@ class Medic {
   }
 
   init () {
+    this.storage = new LocalSt()
+
+    this.storage.load()
+      .then((data) => {
+        if (data === null) {
+          return false
+        } else {
+          this.info = data
+        }
+        console.log(this.info)
+      })
+
     $('.collapse.show').each(function () {
       $(this)
         .prev('.card-header')

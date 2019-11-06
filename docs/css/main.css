@@ -63,10 +63,15 @@ body {
 
 .medic__table {
 	margin-bottom: 0;
+	border: none;
 }
 
 .medic-col-1 {
 	width: 40%;
+}
+
+.table-bordered thead th {
+	border-bottom: none;
 }
 
 .medic-col-2 {

@@ -60,7 +60,7 @@ gulp.task('clean', done => {
 })
 
 gulp.task('copy-libs', done => {
-  gulp.src(['node_modules/jquery/dist/jquery.min.js', 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js '])
+  gulp.src(['node_modules/jquery/dist/jquery.min.js', 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', 'node_modules/@babel/polyfill/dist/polyfill.min.js'])
     .pipe(concat('vendor.js'))
     .pipe(gulp.dest('docs/js'))
 
