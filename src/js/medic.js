@@ -4,20 +4,32 @@
  */
 class Medic {
   constructor (options) {
-    this.checkIdMedic(options)
+    if (this.checkIdMedic(options) && this.checkStorage(options)) {
+      this.init(options)
+    }
   }
 
   checkIdMedic (options) {
     if ('idMedic' in options) {
       this.medicForm = $('#' + options.idMedic)
       if (this.medicForm.length !== 0) {
-        this.init()
+        return true
       }
     }
+    return false
   }
 
-  async init () {
-    this.storage = new LocalSt()
+  checkStorage (options) {
+    if ('storage' in options) {
+      if (typeof options.storage != 'undefined') {
+        return true
+      }
+    }
+    return false
+  }
+
+  async init (options) {
+    this.storage = options.storage
 
     const data = await this.storage.load()
     if (data === null) {
@@ -25,15 +37,29 @@ class Medic {
     } else {
       this.info = data.LPU
     }
-    this.info.forEach((elem) => {
-      if (elem.full_name !== null) { elem.full_name = elem.full_name.replace(/<[^>]+>/g, '').trim() }
-      if (elem.address !== null) { elem.address = elem.address.trim()}
-      if (elem.phone !== null) {elem.phone = elem.phone.trim()}
-    })
-    console.log(_(this.info).groupBy('hid').value())
-    // console.log(this.info)
+
+    this.creatingData()
     this.chevron()
     this.allDown()
+  }
+
+  creatingData () {
+    this.treeData = _(this.info).groupBy('hid').value()
+    this.headers = []
+
+    for (let prop in this.treeData) {
+      if (this.treeData.hasOwnProperty(prop)) {
+        if (prop !== 'null') {
+          const obj = _.find(this.info, {'id': prop})
+          this.headers.push(obj)
+
+          let arr = this.treeData['null']
+          arr.splice(_.findIndex(arr, {'id': prop}), 1)
+          this.treeData['null'] = arr
+        }
+      }
+    }
+    this.headers = _.sortBy(this.headers, ['full_name'])
   }
 
   chevron () {

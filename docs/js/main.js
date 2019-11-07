@@ -46,7 +46,7 @@ function () {
 
               case 5:
                 result = _context.sent;
-                this.save(result);
+                this.save(this.optimize(result));
                 return _context.abrupt("return", result);
 
               case 10:
@@ -81,6 +81,27 @@ function () {
     value: function erase() {
       localStorage.removeItem('json');
     }
+  }, {
+    key: "optimize",
+    value: function optimize(data) {
+      var info = data.LPU;
+      info.forEach(function (elem) {
+        if (elem.full_name !== null) {
+          elem.full_name = elem.full_name.replace(/<[^>]+>/g, '').trim();
+        }
+
+        if (elem.address !== null) {
+          elem.address = elem.address.trim();
+        }
+
+        if (elem.phone !== null) {
+          elem.phone = elem.phone.trim();
+        }
+      });
+      return {
+        'LPU': info
+      };
+    }
   }]);
 
   return LocalSt;
@@ -88,8 +109,10 @@ function () {
 "use strict";
 
 $(document).ready(function () {
+  var local = new LocalSt();
   new Medic({
-    idMedic: 'medicId'
+    idMedic: 'medicId',
+    storage: local
   });
 });
 "use strict";
@@ -114,7 +137,9 @@ function () {
   function Medic(options) {
     _classCallCheck(this, Medic);
 
-    this.checkIdMedic(options);
+    if (this.checkIdMedic(options) && this.checkStorage(options)) {
+      this.init(options);
+    }
   }
 
   _createClass(Medic, [{
@@ -124,22 +149,35 @@ function () {
         this.medicForm = $('#' + options.idMedic);
 
         if (this.medicForm.length !== 0) {
-          this.init();
+          return true;
         }
       }
+
+      return false;
+    }
+  }, {
+    key: "checkStorage",
+    value: function checkStorage(options) {
+      if ('storage' in options) {
+        if (typeof options.storage != 'undefined') {
+          return true;
+        }
+      }
+
+      return false;
     }
   }, {
     key: "init",
     value: function () {
       var _init = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee() {
+      regeneratorRuntime.mark(function _callee(options) {
         var data;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                this.storage = new LocalSt();
+                this.storage = options.storage;
                 _context.next = 3;
                 return this.storage.load();
 
@@ -157,25 +195,11 @@ function () {
                 this.info = data.LPU;
 
               case 9:
-                this.info.forEach(function (elem) {
-                  if (elem.full_name !== null) {
-                    elem.full_name = elem.full_name.replace(/<[^>]+>/g, '').trim();
-                  }
-
-                  if (elem.address !== null) {
-                    elem.address = elem.address.trim();
-                  }
-
-                  if (elem.phone !== null) {
-                    elem.phone = elem.phone.trim();
-                  }
-                });
-                console.log(_(this.info).groupBy('hid').value()); // console.log(this.info)
-
+                this.creatingData();
                 this.chevron();
                 this.allDown();
 
-              case 13:
+              case 12:
               case "end":
                 return _context.stop();
             }
@@ -183,12 +207,37 @@ function () {
         }, _callee, this);
       }));
 
-      function init() {
+      function init(_x) {
         return _init.apply(this, arguments);
       }
 
       return init;
     }()
+  }, {
+    key: "creatingData",
+    value: function creatingData() {
+      this.treeData = _(this.info).groupBy('hid').value();
+      this.headers = [];
+
+      for (var prop in this.treeData) {
+        if (this.treeData.hasOwnProperty(prop)) {
+          if (prop !== 'null') {
+            var obj = _.find(this.info, {
+              'id': prop
+            });
+
+            this.headers.push(obj);
+            var arr = this.treeData['null'];
+            arr.splice(_.findIndex(arr, {
+              'id': prop
+            }), 1);
+            this.treeData['null'] = arr;
+          }
+        }
+      }
+
+      this.headers = _.sortBy(this.headers, ['full_name']);
+    }
   }, {
     key: "chevron",
     value: function chevron() {

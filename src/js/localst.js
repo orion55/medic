@@ -9,7 +9,7 @@ class LocalSt {
     if (!value) {
       try {
         const result = await $.get('json/lpu.json')
-        this.save(result)
+        this.save(this.optimize(result))
         return result
       } catch (error) {
         console.error(`Ошибка: ${error.statusText}`)
@@ -22,5 +22,18 @@ class LocalSt {
 
   erase () {
     localStorage.removeItem('json')
+  }
+
+  optimize (data) {
+    let info = data.LPU
+
+    info.forEach((elem) => {
+      if (elem.full_name !== null) {
+        elem.full_name = elem.full_name.replace(/<[^>]+>/g, '').trim()
+      }
+      if (elem.address !== null) { elem.address = elem.address.trim()}
+      if (elem.phone !== null) {elem.phone = elem.phone.trim()}
+    })
+    return {'LPU': info}
   }
 }
