@@ -5,7 +5,8 @@ class LocalSt {
   }
 
   async load () {
-    if (!localStorage.getItem('json')) {
+    const value = localStorage.getItem('json')
+    if (!value) {
       try {
         const result = await $.get('json/lpu.json')
         this.save(result)
@@ -15,7 +16,6 @@ class LocalSt {
         return null
       }
     } else {
-      const value = localStorage.getItem('json')
       return value ? JSON.parse(value) : null
     }
   }

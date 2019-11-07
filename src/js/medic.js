@@ -16,19 +16,27 @@ class Medic {
     }
   }
 
-  init () {
+  async init () {
     this.storage = new LocalSt()
 
-    this.storage.load()
-      .then((data) => {
-        if (data === null) {
-          return false
-        } else {
-          this.info = data
-        }
-        console.log(this.info)
-      })
+    const data = await this.storage.load()
+    if (data === null) {
+      return false
+    } else {
+      this.info = data.LPU
+    }
+    this.info.forEach((elem) => {
+      if (elem.full_name !== null) { elem.full_name = elem.full_name.replace(/<[^>]+>/g, '').trim() }
+      if (elem.address !== null) { elem.address = elem.address.trim()}
+      if (elem.phone !== null) {elem.phone = elem.phone.trim()}
+    })
+    console.log(_(this.info).groupBy('hid').value())
+    // console.log(this.info)
+    this.chevron()
+    this.allDown()
+  }
 
+  chevron () {
     $('.collapse.show').each(function () {
       $(this)
         .prev('.card-header')
@@ -50,7 +58,9 @@ class Medic {
         .removeClass('fa-chevron-up')
         .addClass('fa-chevron-down')
     })
+  }
 
+  allDown () {
     $('#medicAllDown').click(function () {
       let btn = $(this).find('.fas')
       if (btn.hasClass('fa-angle-double-down')) {
@@ -82,10 +92,6 @@ class Medic {
             toggle: false,
           })
       }
-
     })
-
   }
 }
-
-// module.exports = Medic
