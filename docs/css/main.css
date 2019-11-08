@@ -66,19 +66,19 @@ body {
 	border: none;
 }
 
-.medic-col-1 {
-	width: 40%;
-}
-
 .table-bordered thead th {
 	border-bottom: none;
 }
 
-.medic-col-2 {
+td.medic-col-1 {
+	width: 40%;
+}
+
+td.medic-col-2 {
 	width: 30%;
 }
 
-.medic-col-3 {
+td.medic-col-3 {
 	width: 30%;
 }
 

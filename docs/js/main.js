@@ -201,8 +201,10 @@ function () {
                 this.activateCard();
                 this.chevron();
                 this.allDown();
+                this.createModal();
+                this.rowClick();
 
-              case 15:
+              case 17:
               case "end":
                 return _context.stop();
             }
@@ -282,7 +284,7 @@ function () {
         };
       }
 
-      this.medicAccordion.append("<div class=\"card\" id=\"card-".concat(id, "\">\n        <div class=\"card-header medic__header medic__card\" id=\"heading-").concat(id, "\">\n            <table class=\"table table-hover table-bordered medic__table medic__header\">\n                <tr class=\"mb-0 medic__title-card\" data-toggle=\"collapse\"\n                    data-target=\"#collapse-").concat(id, "\" aria-expanded=\"true\"\n                    aria-controls=\"collapse-").concat(id, "\">\n                    <td class=\"medic-col-1\">\n                        <i class=\"fas fa-chevron-down medic__fas\"></i>").concat(obj.full_name !== null ? obj.full_name : '', "\n                    </td>\n                    <td class=\"medic-col-2\">").concat(obj.address !== null ? obj.address : '', "</td>\n                    <td class=\"medic-col-3\">").concat(obj.phone !== null ? obj.phone : '', "</td>\n                </tr>\n            </table>\n        </div>"));
+      this.medicAccordion.append("<div class=\"card\" id=\"card-".concat(id, "\">\n        <div class=\"card-header medic__header medic__card\" id=\"heading-").concat(id, "\">\n            <table class=\"table table-hover table-bordered medic__table medic__header\"><thead>\n                <tr class=\"mb-0 medic__title-card\" data-toggle=\"collapse\"\n                    data-target=\"#collapse-").concat(id, "\" aria-expanded=\"true\"\n                    aria-controls=\"collapse-").concat(id, "\">\n                    <td class=\"medic-col-1\">\n                        <i class=\"fas fa-chevron-down medic__fas\"></i>").concat(obj.full_name !== null ? obj.full_name : '', "\n                    </td>\n                    <td class=\"medic-col-2\">").concat(obj.address !== null ? obj.address : '', "</td>\n                    <td class=\"medic-col-3\">").concat(obj.phone !== null ? obj.phone : '', "</td>\n                </tr>\n                </thead>\n            </table>\n        </div>"));
       this.displayCardBody(id);
       this.medicAccordion.last("</div>");
     }
@@ -294,7 +296,7 @@ function () {
       curCard.append("<div id=\"collapse-".concat(hid, "\" class=\"medic__panel collapse\"\n             aria-labelledby=\"heading-").concat(hid, "\"\n             data-parent=\"#medicAccordion\">\n            <div class=\"card-body medic__card\">\n                <table class=\"table table-hover table-bordered medic__table\" id=\"table-").concat(hid, "\"><tbody>"));
       var curTable = $("#table-".concat(hid));
       arr.forEach(function (elem) {
-        curTable.append("<tr>\n                        <td class=\"medic-col-1\">".concat(elem.full_name !== null ? elem.full_name : '', "</td>\n                        <td class=\"medic-col-2\">").concat(elem.address !== null ? elem.address : '', "</td>\n                        <td class=\"medic-col-3\">").concat(elem.phone !== null ? elem.phone : '', "</td>\n                    </tr>"));
+        curTable.append("<tr class=\"medic__row\" data-id=\"".concat(elem.id, "\" data-hid=\"").concat(hid, "\" >\n                        <td class=\"medic-col-1\">").concat(elem.full_name !== null ? elem.full_name : '', "</td>\n                        <td class=\"medic-col-2\">").concat(elem.address !== null ? elem.address : '', "</td>\n                        <td class=\"medic-col-3\">").concat(elem.phone !== null ? elem.phone : '', "</td>\n                    </tr>"));
       });
       curCard.last("</tbody></table>\n            </div>\n        </div>");
     }
@@ -341,6 +343,19 @@ function () {
             toggle: false
           });
         }
+      });
+    }
+  }, {
+    key: "createModal",
+    value: function createModal() {
+      this.medicForm.append("<div class=\"modal fade\" id=\"exampleModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"exampleModalLabel\">New message</h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n        <form>\n          <div class=\"form-group\">\n            <label for=\"recipient-name\" class=\"col-form-label\">Recipient:</label>\n            <input type=\"text\" class=\"form-control\" id=\"recipient-name\">\n          </div>\n          <div class=\"form-group\">\n            <label for=\"message-text\" class=\"col-form-label\">Message:</label>\n            <textarea class=\"form-control\" id=\"message-text\"></textarea>\n          </div>\n        </form>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n        <button type=\"button\" class=\"btn btn-primary\">Send message</button>\n      </div>\n    </div>\n  </div>\n</div>");
+    }
+  }, {
+    key: "rowClick",
+    value: function rowClick() {
+      $('.medic__row').click(function (event) {
+        console.log($(event.currentTarget).data());
+        $('#exampleModal').modal('show');
       });
     }
   }]);

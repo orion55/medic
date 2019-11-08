@@ -48,20 +48,23 @@
   border: none;
 }
 
-.medic-col-1 {
-  width: 40%;
-}
-
 .table-bordered thead th {
   border-bottom: none
 }
 
-.medic-col-2 {
-  width: 30%;
+td.medic-col-1 {
+  width: 40%;
+  //width: 443px;
 }
 
-.medic-col-3 {
+td.medic-col-2 {
   width: 30%;
+  //width: 332px;
+}
+
+td.medic-col-3 {
+  width: 30%;
+  //width: 332px;
 }
 
 .medic__header td {

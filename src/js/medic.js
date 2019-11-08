@@ -47,6 +47,9 @@ class Medic {
 
     this.chevron()
     this.allDown()
+
+    this.createModal()
+    this.rowClick()
   }
 
   creatingData () {
@@ -118,7 +121,7 @@ class Medic {
 
     this.medicAccordion.append(`<div class="card" id="card-${id}">
         <div class="card-header medic__header medic__card" id="heading-${id}">
-            <table class="table table-hover table-bordered medic__table medic__header">
+            <table class="table table-hover table-bordered medic__table medic__header"><thead>
                 <tr class="mb-0 medic__title-card" data-toggle="collapse"
                     data-target="#collapse-${id}" aria-expanded="true"
                     aria-controls="collapse-${id}">
@@ -128,6 +131,7 @@ class Medic {
                     <td class="medic-col-2">${obj.address !== null ? obj.address : ''}</td>
                     <td class="medic-col-3">${obj.phone !== null ? obj.phone : ''}</td>
                 </tr>
+                </thead>
             </table>
         </div>`)
 
@@ -149,7 +153,7 @@ class Medic {
 
     let curTable = $(`#table-${hid}`)
     arr.forEach((elem) => {
-      curTable.append(`<tr>
+      curTable.append(`<tr class="medic__row" data-id="${elem.id}" data-hid="${hid}" >
                         <td class="medic-col-1">${elem.full_name !== null ? elem.full_name : ''}</td>
                         <td class="medic-col-2">${elem.address !== null ? elem.address : ''}</td>
                         <td class="medic-col-3">${elem.phone !== null ? elem.phone : ''}</td>
@@ -223,6 +227,44 @@ class Medic {
             toggle: false,
           })
       }
+    })
+  }
+
+  createModal () {
+    this.medicForm.append(`<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Recipient:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Send message</button>
+      </div>
+    </div>
+  </div>
+</div>`)
+  }
+
+  rowClick () {
+    $('.medic__row').click(function (event) {
+      console.log($(event.currentTarget).data())
+      $('#exampleModal').modal('show')
     })
   }
 }
