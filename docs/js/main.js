@@ -196,10 +196,12 @@ function () {
 
               case 9:
                 this.creatingData();
+                this.displayHead();
+                this.dispalayAccordion();
                 this.chevron();
                 this.allDown();
 
-              case 12:
+              case 14:
               case "end":
                 return _context.stop();
             }
@@ -236,7 +238,64 @@ function () {
         }
       }
 
+      for (var _prop in this.treeData) {
+        if (this.treeData.hasOwnProperty(_prop)) {
+          var _arr = this.treeData[_prop];
+          _arr = _.sortBy(_arr, ['full_name']);
+          this.treeData[_prop] = _arr;
+        }
+      }
+
       this.headers = _.sortBy(this.headers, ['full_name']);
+    }
+  }, {
+    key: "displayHead",
+    value: function displayHead() {
+      this.medicForm.prepend("<div class=\"medic__control-panel\">\n                <button type=\"button\" class=\"btn btn-info\" id=\"medicAdd\"\n                        title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0437\u0430\u043F\u0438\u0441\u044C\"><i class=\"fas fa-plus\"></i></button>\n                <button type=\"button\" class=\"btn btn-info\" id=\"medicAllDown\"\n                        title=\"\u0421\u0432\u0435\u0440\u043D\u0443\u0442\u044C\\\u0440\u0430\u0437\u0432\u0435\u0440\u043D\u0443\u0442\u044C \u0432\u0441\u0451\"><i\n                        class=\"fas fa-angle-double-down\"></i></button>\n                <button type=\"button\" class=\"btn btn-info\" id=\"medicJson\"\n                        title=\"\u0421\u043A\u0430\u0447\u0430\u0442\u044C json\"><i\n                        class=\"fas fa-download\"></i></button>\n            </div>\n            <table class=\"table table-hover table-bordered medic__table\">\n                <thead>\n                <tr>\n                    <th scope=\"col\" class=\"medic-col-1\">\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435</th>\n                    <th scope=\"col\" class=\"medic-col-2\">\u0410\u0434\u0440\u0435\u0441</th>\n                    <th scope=\"col\" class=\"medic-col-3\">\u0422\u0435\u043B\u0435\u0444\u043E\u043D</th>\n                </tr>\n                </thead>\n            </table>\n            <div class=\"accordion\" id=\"medicAccordion\"></div>");
+    }
+  }, {
+    key: "dispalayAccordion",
+    value: function dispalayAccordion() {
+      var _this = this;
+
+      this.medicAccordion = $('#medicAccordion');
+      this.headers.forEach(function (elem) {
+        _this.displayCard(elem.id);
+      });
+      this.displayCard(null);
+    }
+  }, {
+    key: "displayCard",
+    value: function displayCard(id) {
+      var obj;
+
+      if (id !== null) {
+        obj = _.find(this.headers, {
+          'id': id
+        });
+      } else {
+        obj = {
+          'full_name': 'Без категории',
+          'address': null,
+          'phone': null
+        };
+      }
+
+      this.medicAccordion.append("<div class=\"card\" id=\"card-".concat(id, "\">\n        <div class=\"card-header medic__header medic__card\" id=\"heading-").concat(id, "\">\n            <table class=\"table table-hover table-bordered medic__table medic__header\">\n                <tr class=\"mb-0 medic__title-card\" data-toggle=\"collapse\"\n                    data-target=\"#collapse-").concat(id, "\" aria-expanded=\"true\"\n                    aria-controls=\"collapse-").concat(id, "\">\n                    <td class=\"medic-col-1\">\n                        <i class=\"fas fa-chevron-down medic__fas\"></i>").concat(obj.full_name !== null ? obj.full_name : '', "\n                    </td>\n                    <td class=\"medic-col-2\">").concat(obj.address !== null ? obj.address : '', "</td>\n                    <td class=\"medic-col-3\">").concat(obj.phone !== null ? obj.phone : '', "</td>\n                </tr>\n            </table>\n        </div>"));
+      this.displayCardBody(id);
+      this.medicAccordion.last("</div>");
+    }
+  }, {
+    key: "displayCardBody",
+    value: function displayCardBody(hid) {
+      var arr = this.treeData[hid];
+      var curCard = $("#card-".concat(hid));
+      curCard.append("<div id=\"collapse-".concat(hid, "\" class=\"medic__panel collapse show\"\n             aria-labelledby=\"heading-").concat(hid, "\"\n             data-parent=\"#medicAccordion\">\n            <div class=\"card-body medic__card\">\n                <table class=\"table table-hover table-bordered medic__table\" id=\"table-").concat(hid, "\">"));
+      var curTable = $("#table-".concat(hid));
+      arr.forEach(function (elem) {
+        curTable.append("<tr>\n                        <td class=\"medic-col-1\">".concat(elem.full_name !== null ? elem.full_name : '', "</td>\n                        <td class=\"medic-col-2\">").concat(elem.address !== null ? elem.address : '', "</td>\n                        <td class=\"medic-col-3\">").concat(elem.phone !== null ? elem.phone : '', "</td>\n                    </tr>"));
+      });
+      curCard.last("</table>\n            </div>\n        </div>");
     }
   }, {
     key: "chevron",

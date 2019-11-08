@@ -39,6 +39,10 @@ class Medic {
     }
 
     this.creatingData()
+
+    this.displayHead()
+    this.dispalayAccordion()
+
     this.chevron()
     this.allDown()
   }
@@ -59,7 +63,100 @@ class Medic {
         }
       }
     }
+
+    for (let prop in this.treeData) {
+      if (this.treeData.hasOwnProperty(prop)) {
+        let arr = this.treeData[prop]
+        arr = _.sortBy(arr, ['full_name'])
+        this.treeData[prop] = arr
+      }
+    }
+
     this.headers = _.sortBy(this.headers, ['full_name'])
+  }
+
+  displayHead () {
+    this.medicForm.prepend(`<div class="medic__control-panel">
+                <button type="button" class="btn btn-info" id="medicAdd"
+                        title="Добавить запись"><i class="fas fa-plus"></i></button>
+                <button type="button" class="btn btn-info" id="medicAllDown"
+                        title="Свернуть\\развернуть всё"><i
+                        class="fas fa-angle-double-down"></i></button>
+                <button type="button" class="btn btn-info" id="medicJson"
+                        title="Скачать json"><i
+                        class="fas fa-download"></i></button>
+            </div>
+            <table class="table table-hover table-bordered medic__table">
+                <thead>
+                <tr>
+                    <th scope="col" class="medic-col-1">Наименование</th>
+                    <th scope="col" class="medic-col-2">Адрес</th>
+                    <th scope="col" class="medic-col-3">Телефон</th>
+                </tr>
+                </thead>
+            </table>
+            <div class="accordion" id="medicAccordion"></div>`)
+  }
+
+  dispalayAccordion () {
+    this.medicAccordion = $('#medicAccordion')
+    this.headers.forEach((elem) => {
+      this.displayCard(elem.id)
+    })
+    this.displayCard(null)
+  }
+
+  displayCard (id) {
+    let obj
+    if (id !== null) {
+      obj = _.find(this.headers, {'id': id})
+    } else {
+      obj = {'full_name': 'Без категории', 'address': null, 'phone': null}
+    }
+
+    this.medicAccordion.append(`<div class="card" id="card-${id}">
+        <div class="card-header medic__header medic__card" id="heading-${id}">
+            <table class="table table-hover table-bordered medic__table medic__header">
+                <tr class="mb-0 medic__title-card" data-toggle="collapse"
+                    data-target="#collapse-${id}" aria-expanded="true"
+                    aria-controls="collapse-${id}">
+                    <td class="medic-col-1">
+                        <i class="fas fa-chevron-down medic__fas"></i>${obj.full_name !== null ? obj.full_name : ''}
+                    </td>
+                    <td class="medic-col-2">${obj.address !== null ? obj.address : ''}</td>
+                    <td class="medic-col-3">${obj.phone !== null ? obj.phone : ''}</td>
+                </tr>
+            </table>
+        </div>`)
+
+    this.displayCardBody(id)
+
+    this.medicAccordion.last(`</div>`)
+  }
+
+  displayCardBody (hid) {
+    let arr = this.treeData[hid]
+    let curCard = $(`#card-${hid}`)
+
+    curCard.append(`<div id="collapse-${hid}" class="medic__panel collapse show"
+             aria-labelledby="heading-${hid}"
+             data-parent="#medicAccordion">
+            <div class="card-body medic__card">
+                <table class="table table-hover table-bordered medic__table" id="table-${hid}">`)
+
+    let curTable = $(`#table-${hid}`)
+    arr.forEach((elem) => {
+      curTable.append(`<tr>
+                        <td class="medic-col-1">${elem.full_name !== null ? elem.full_name : ''}</td>
+                        <td class="medic-col-2">${elem.address !== null ? elem.address : ''}</td>
+                        <td class="medic-col-3">${elem.phone !== null ? elem.phone : ''}</td>
+                    </tr>`)
+    })
+
+    curCard.last(`</table>
+            </div>
+        </div>`)
+
   }
 
   chevron () {
