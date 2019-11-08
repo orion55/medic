@@ -43,6 +43,8 @@ class Medic {
     this.displayHead()
     this.dispalayAccordion()
 
+    this.activateCard()
+
     this.chevron()
     this.allDown()
   }
@@ -100,10 +102,10 @@ class Medic {
 
   dispalayAccordion () {
     this.medicAccordion = $('#medicAccordion')
+    this.displayCard(null)
     this.headers.forEach((elem) => {
       this.displayCard(elem.id)
     })
-    this.displayCard(null)
   }
 
   displayCard (id) {
@@ -132,17 +134,18 @@ class Medic {
     this.displayCardBody(id)
 
     this.medicAccordion.last(`</div>`)
+
   }
 
   displayCardBody (hid) {
     let arr = this.treeData[hid]
     let curCard = $(`#card-${hid}`)
 
-    curCard.append(`<div id="collapse-${hid}" class="medic__panel collapse show"
+    curCard.append(`<div id="collapse-${hid}" class="medic__panel collapse"
              aria-labelledby="heading-${hid}"
              data-parent="#medicAccordion">
             <div class="card-body medic__card">
-                <table class="table table-hover table-bordered medic__table" id="table-${hid}">`)
+                <table class="table table-hover table-bordered medic__table" id="table-${hid}"><tbody>`)
 
     let curTable = $(`#table-${hid}`)
     arr.forEach((elem) => {
@@ -153,10 +156,15 @@ class Medic {
                     </tr>`)
     })
 
-    curCard.last(`</table>
+    curCard.last(`</tbody></table>
             </div>
         </div>`)
 
+  }
+
+  activateCard () {
+    let id = this.headers[0].id
+    $(`#collapse-${id}`).addClass('show')
   }
 
   chevron () {

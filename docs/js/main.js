@@ -198,10 +198,11 @@ function () {
                 this.creatingData();
                 this.displayHead();
                 this.dispalayAccordion();
+                this.activateCard();
                 this.chevron();
                 this.allDown();
 
-              case 14:
+              case 15:
               case "end":
                 return _context.stop();
             }
@@ -259,10 +260,10 @@ function () {
       var _this = this;
 
       this.medicAccordion = $('#medicAccordion');
+      this.displayCard(null);
       this.headers.forEach(function (elem) {
         _this.displayCard(elem.id);
       });
-      this.displayCard(null);
     }
   }, {
     key: "displayCard",
@@ -290,12 +291,18 @@ function () {
     value: function displayCardBody(hid) {
       var arr = this.treeData[hid];
       var curCard = $("#card-".concat(hid));
-      curCard.append("<div id=\"collapse-".concat(hid, "\" class=\"medic__panel collapse show\"\n             aria-labelledby=\"heading-").concat(hid, "\"\n             data-parent=\"#medicAccordion\">\n            <div class=\"card-body medic__card\">\n                <table class=\"table table-hover table-bordered medic__table\" id=\"table-").concat(hid, "\">"));
+      curCard.append("<div id=\"collapse-".concat(hid, "\" class=\"medic__panel collapse\"\n             aria-labelledby=\"heading-").concat(hid, "\"\n             data-parent=\"#medicAccordion\">\n            <div class=\"card-body medic__card\">\n                <table class=\"table table-hover table-bordered medic__table\" id=\"table-").concat(hid, "\"><tbody>"));
       var curTable = $("#table-".concat(hid));
       arr.forEach(function (elem) {
         curTable.append("<tr>\n                        <td class=\"medic-col-1\">".concat(elem.full_name !== null ? elem.full_name : '', "</td>\n                        <td class=\"medic-col-2\">").concat(elem.address !== null ? elem.address : '', "</td>\n                        <td class=\"medic-col-3\">").concat(elem.phone !== null ? elem.phone : '', "</td>\n                    </tr>"));
       });
-      curCard.last("</table>\n            </div>\n        </div>");
+      curCard.last("</tbody></table>\n            </div>\n        </div>");
+    }
+  }, {
+    key: "activateCard",
+    value: function activateCard() {
+      var id = this.headers[0].id;
+      $("#collapse-".concat(id)).addClass('show');
     }
   }, {
     key: "chevron",
