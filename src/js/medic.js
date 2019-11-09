@@ -38,6 +38,9 @@ class Medic {
       this.info = data.LPU
     }
 
+    this.id = 0
+    this.hid = 0
+
     this.creatingData()
 
     this.displayHead()
@@ -50,8 +53,14 @@ class Medic {
     this.allDown()
 
     this.createModal()
+    this.createDialog()
+
     this.rowClick()
     this.okModalClick()
+    this.removeModalClick()
+    this.removeModalClickOk()
+
+    this.addButton()
   }
 
   creatingData () {
@@ -249,7 +258,7 @@ class Medic {
         </button>
       </div>
       <div class="modal-body">
-        <form id="medicForm">
+        <form id="medicFormik">
         <div class="form-group">
             <label for="recipient-name" class="col-form-label">Категория</label>
             <select class="form-control" id="medic-headers">
@@ -290,7 +299,30 @@ class Medic {
 </div>`)
 
     this.medicModal = $('#medicModal')
-    this.medicForm = $('#medicForm')[0]
+    this.medicFormik = $('#medicFormik')[0]
+  }
+
+  createDialog () {
+    this.medicForm.append(`<div class="modal fade" id="medicDialog" tabindex="-1" role="dialog" aria-labelledby="medicDialogLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="medicDialogLabel">Вы действительно хотите удалить запись?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="medic__dialog-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-danger" id="medic__dialog-ok">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>`)
+
+    this.medicDialog = $('#medicDialog')
   }
 
   rowClick () {
@@ -303,14 +335,34 @@ class Medic {
 
   okModalClick () {
     $('#medic__ok').click((event) => {
-      if (!this.medicForm.checkValidity()) {
+      if (!this.medicFormik.checkValidity()) {
         event.preventDefault()
         event.stopPropagation()
       } else {
         this.saveRecord(this.id, this.hid)
         this.medicModal.modal('hide')
       }
-      this.medicForm.classList.add('was-validated')
+      this.medicFormik.classList.add('was-validated')
+    })
+  }
+
+  removeModalClick () {
+    $('#medic__remove').click((event) => {
+      this.medicModal.modal('hide')
+
+      const obj = _.find(this.info, {'id': this.id + ''})
+      $('#medic__dialog-body').text(obj.full_name)
+
+      this.medicDialog.modal('show')
+    })
+  }
+
+  removeModalClickOk () {
+    $('#medic__dialog-ok').click(() => {
+      this.info.splice(_.findIndex(this.info, {'id': this.id + ''}), 1)
+      this.medicDialog.modal('hide')
+      this.storage.save({'LPU': this.info})
+      this.refreshRecord(this.hid)
     })
   }
 
@@ -334,7 +386,7 @@ class Medic {
   }
 
   showModal (id, hid) {
-    this.medicForm.classList.remove('was-validated')
+    this.medicFormik.classList.remove('was-validated')
 
     const category = $('#medic-headers')
     category.empty()
@@ -368,5 +420,12 @@ class Medic {
 
   isNull (val) {
     return _.isNull(val) ? '' : val
+  }
+
+  addButton () {
+    $('#medicAdd').click((event) => {
+      console.log(event)
+
+    })
   }
 }

@@ -195,6 +195,8 @@ function () {
                 this.info = data.LPU;
 
               case 9:
+                this.id = 0;
+                this.hid = 0;
                 this.creatingData();
                 this.displayHead();
                 this.dispalayAccordion();
@@ -203,10 +205,14 @@ function () {
                 this.chevron();
                 this.allDown();
                 this.createModal();
+                this.createDialog();
                 this.rowClick();
                 this.okModalClick();
+                this.removeModalClick();
+                this.removeModalClickOk();
+                this.addButton();
 
-              case 19:
+              case 25:
               case "end":
                 return _context.stop();
             }
@@ -350,9 +356,15 @@ function () {
   }, {
     key: "createModal",
     value: function createModal() {
-      this.medicForm.append("<div class=\"modal fade\" id=\"medicModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"medicModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"medicModalLabel\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0437\u0430\u043F\u0438\u0441\u0438</h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n        <form id=\"medicForm\">\n        <div class=\"form-group\">\n            <label for=\"recipient-name\" class=\"col-form-label\">\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F</label>\n            <select class=\"form-control\" id=\"medic-headers\">\n              <option value=\"null\">\u0411\u0435\u0437 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438</option>\n              <option>2</option>\n            </select>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"recipient-name\" class=\"col-form-label\">\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-full_name\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"message-text\" class=\"col-form-label\">\u0410\u0434\u0440\u0435\u0441</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-address\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0430\u0434\u0440\u0435\u0441. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n           <div class=\"form-group\">\n            <label for=\"message-text\" class=\"col-form-label\">\u0422\u0435\u043B\u0435\u0444\u043E\u043D</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-phone\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0442\u0435\u043B\u0435\u0444\u043E\u043D. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n        </form>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-danger\" id=\"medic__remove\">\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0437\u0430\u043F\u0438\u0441\u044C</button>\n        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">\u041E\u0442\u043C\u0435\u043D\u0430</button>\n        <button type=\"button\" class=\"btn btn-info\" id=\"medic__ok\">Ok</button>\n      </div>\n    </div>\n  </div>\n</div>");
+      this.medicForm.append("<div class=\"modal fade\" id=\"medicModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"medicModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"medicModalLabel\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0437\u0430\u043F\u0438\u0441\u0438</h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n        <form id=\"medicFormik\">\n        <div class=\"form-group\">\n            <label for=\"recipient-name\" class=\"col-form-label\">\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F</label>\n            <select class=\"form-control\" id=\"medic-headers\">\n              <option value=\"null\">\u0411\u0435\u0437 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438</option>\n              <option>2</option>\n            </select>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"recipient-name\" class=\"col-form-label\">\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-full_name\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"message-text\" class=\"col-form-label\">\u0410\u0434\u0440\u0435\u0441</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-address\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0430\u0434\u0440\u0435\u0441. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n           <div class=\"form-group\">\n            <label for=\"message-text\" class=\"col-form-label\">\u0422\u0435\u043B\u0435\u0444\u043E\u043D</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-phone\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0442\u0435\u043B\u0435\u0444\u043E\u043D. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n        </form>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-danger\" id=\"medic__remove\">\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0437\u0430\u043F\u0438\u0441\u044C</button>\n        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">\u041E\u0442\u043C\u0435\u043D\u0430</button>\n        <button type=\"button\" class=\"btn btn-info\" id=\"medic__ok\">Ok</button>\n      </div>\n    </div>\n  </div>\n</div>");
       this.medicModal = $('#medicModal');
-      this.medicForm = $('#medicForm')[0];
+      this.medicFormik = $('#medicFormik')[0];
+    }
+  }, {
+    key: "createDialog",
+    value: function createDialog() {
+      this.medicForm.append("<div class=\"modal fade\" id=\"medicDialog\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"medicDialogLabel\" aria-hidden=\"true\">\n      <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\n        <div class=\"modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"medicDialogLabel\">\u0412\u044B \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0442\u0435\u043B\u044C\u043D\u043E \u0445\u043E\u0442\u0438\u0442\u0435 \u0443\u0434\u0430\u043B\u0438\u0442\u044C \u0437\u0430\u043F\u0438\u0441\u044C?</h5>\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n              <span aria-hidden=\"true\">&times;</span>\n            </button>\n          </div>\n          <div class=\"modal-body\" id=\"medic__dialog-body\">\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">\u041E\u0442\u043C\u0435\u043D\u0430</button>\n            <button type=\"button\" class=\"btn btn-danger\" id=\"medic__dialog-ok\">Ok</button>\n          </div>\n        </div>\n      </div>\n    </div>");
+      this.medicDialog = $('#medicDialog');
     }
   }, {
     key: "rowClick",
@@ -372,7 +384,7 @@ function () {
       var _this3 = this;
 
       $('#medic__ok').click(function (event) {
-        if (!_this3.medicForm.checkValidity()) {
+        if (!_this3.medicFormik.checkValidity()) {
           event.preventDefault();
           event.stopPropagation();
         } else {
@@ -381,7 +393,43 @@ function () {
           _this3.medicModal.modal('hide');
         }
 
-        _this3.medicForm.classList.add('was-validated');
+        _this3.medicFormik.classList.add('was-validated');
+      });
+    }
+  }, {
+    key: "removeModalClick",
+    value: function removeModalClick() {
+      var _this4 = this;
+
+      $('#medic__remove').click(function (event) {
+        _this4.medicModal.modal('hide');
+
+        var obj = _.find(_this4.info, {
+          'id': _this4.id + ''
+        });
+
+        $('#medic__dialog-body').text(obj.full_name);
+
+        _this4.medicDialog.modal('show');
+      });
+    }
+  }, {
+    key: "removeModalClickOk",
+    value: function removeModalClickOk() {
+      var _this5 = this;
+
+      $('#medic__dialog-ok').click(function () {
+        _this5.info.splice(_.findIndex(_this5.info, {
+          'id': _this5.id + ''
+        }), 1);
+
+        _this5.medicDialog.modal('hide');
+
+        _this5.storage.save({
+          'LPU': _this5.info
+        });
+
+        _this5.refreshRecord(_this5.hid);
       });
     }
   }, {
@@ -411,7 +459,7 @@ function () {
   }, {
     key: "showModal",
     value: function showModal(id, hid) {
-      this.medicForm.classList.remove('was-validated');
+      this.medicFormik.classList.remove('was-validated');
       var category = $('#medic-headers');
       category.empty();
       $('<option />', {
@@ -439,6 +487,13 @@ function () {
     key: "isNull",
     value: function isNull(val) {
       return _.isNull(val) ? '' : val;
+    }
+  }, {
+    key: "addButton",
+    value: function addButton() {
+      $('#medicAdd').click(function (event) {
+        console.log(event);
+      });
     }
   }]);
 
