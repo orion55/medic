@@ -43,7 +43,8 @@ class Medic {
     this.displayHead()
     this.dispalayAccordion()
 
-    this.activateCard()
+    this.hid = this.headers[0].id
+    this.activateCard(this.hid)
 
     this.chevron()
     this.allDown()
@@ -106,6 +107,7 @@ class Medic {
 
   dispalayAccordion () {
     this.medicAccordion = $('#medicAccordion')
+    this.medicAccordion.empty()
     this.displayCard(null)
     this.headers.forEach((elem) => {
       this.displayCard(elem.id)
@@ -173,9 +175,8 @@ class Medic {
 
   }
 
-  activateCard () {
-    let id = this.headers[0].id
-    $(`#collapse-${id}`).addClass('show')
+  activateCard (hid) {
+    $(`#collapse-${hid}`).addClass('show')
   }
 
   chevron () {
@@ -248,7 +249,7 @@ class Medic {
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form id="medicForm">
         <div class="form-group">
             <label for="recipient-name" class="col-form-label">Категория</label>
             <select class="form-control" id="medic-headers">
@@ -258,15 +259,24 @@ class Medic {
           </div>
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">Наименование</label>
-            <input type="text" class="form-control" id="medic-full_name">
+            <input type="text" class="form-control" id="medic-full_name" required>
+             <div class="invalid-feedback">
+                Введите наименование. Это поле не пустое.
+              </div>
           </div>
           <div class="form-group">
             <label for="message-text" class="col-form-label">Адрес</label>
-            <input type="text" class="form-control" id="medic-address">
+            <input type="text" class="form-control" id="medic-address" required>
+             <div class="invalid-feedback">
+                Введите адрес. Это поле не пустое.
+              </div>
           </div>
            <div class="form-group">
             <label for="message-text" class="col-form-label">Телефон</label>
-            <input type="text" class="form-control" id="medic-phone">
+            <input type="text" class="form-control" id="medic-phone" required>
+             <div class="invalid-feedback">
+                Введите телефон. Это поле не пустое.
+              </div>
           </div>
         </form>
       </div>
@@ -280,24 +290,52 @@ class Medic {
 </div>`)
 
     this.medicModal = $('#medicModal')
+    this.medicForm = $('#medicForm')[0]
   }
 
   rowClick () {
     $('.medic__row').click((event) => {
-      const id = $(event.currentTarget).data().id
-      const hid = $(event.currentTarget).data().hid
-      this.showModal(id, hid)
+      this.id = $(event.currentTarget).data().id
+      this.hid = $(event.currentTarget).data().hid
+      this.showModal(this.id, this.hid)
     })
   }
 
   okModalClick () {
     $('#medic__ok').click((event) => {
-      console.log('Ok')
-      this.medicModal.modal('hide')
+      if (!this.medicForm.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      } else {
+        this.saveRecord(this.id, this.hid)
+        this.medicModal.modal('hide')
+      }
+      this.medicForm.classList.add('was-validated')
     })
   }
 
+  saveRecord (id, hid) {
+    let obj = _.find(this.info, {'id': id + ''})
+    obj.full_name = $('#medic-full_name').val()
+    obj.address = $('#medic-address').val()
+    obj.phone = $('#medic-phone').val()
+    obj.hid = $('#medic-headers option:selected').val() + ''
+
+    this.storage.save({'LPU': this.info})
+
+    this.refreshRecord(obj.hid)
+  }
+
+  refreshRecord (hid) {
+    this.creatingData()
+    this.dispalayAccordion()
+    this.rowClick()
+    this.activateCard(hid)
+  }
+
   showModal (id, hid) {
+    this.medicForm.classList.remove('was-validated')
+
     const category = $('#medic-headers')
     category.empty()
 
