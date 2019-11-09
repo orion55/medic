@@ -50,6 +50,7 @@ class Medic {
 
     this.createModal()
     this.rowClick()
+    this.okModalClick()
   }
 
   creatingData () {
@@ -116,7 +117,11 @@ class Medic {
     if (id !== null) {
       obj = _.find(this.headers, {'id': id})
     } else {
-      obj = {'full_name': 'Без категории', 'address': null, 'phone': null}
+      obj = {
+        'full_name': 'Без категории',
+        'address': null,
+        'phone': null,
+      }
     }
 
     this.medicAccordion.append(`<div class="card" id="card-${id}">
@@ -126,7 +131,9 @@ class Medic {
                     data-target="#collapse-${id}" aria-expanded="true"
                     aria-controls="collapse-${id}">
                     <td class="medic-col-1">
-                        <i class="fas fa-chevron-down medic__fas"></i>${obj.full_name !== null ? obj.full_name : ''}
+                        <i class="fas fa-chevron-down medic__fas"></i>${obj.full_name !== null
+      ? obj.full_name
+      : ''}
                     </td>
                     <td class="medic-col-2">${obj.address !== null ? obj.address : ''}</td>
                     <td class="medic-col-3">${obj.phone !== null ? obj.phone : ''}</td>
@@ -231,40 +238,97 @@ class Medic {
   }
 
   createModal () {
-    this.medicForm.append(`<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+    this.medicForm.append(`<div class="modal fade" id="medicModal" tabindex="-1" role="dialog" aria-labelledby="medicModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <h5 class="modal-title" id="medicModalLabel">Редактирование записи</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <form>
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Recipient:</label>
-            <input type="text" class="form-control" id="recipient-name">
+        <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Категория</label>
+            <select class="form-control" id="medic-headers">
+              <option value="null">Без категории</option>
+              <option>2</option>
+            </select>
           </div>
           <div class="form-group">
-            <label for="message-text" class="col-form-label">Message:</label>
-            <textarea class="form-control" id="message-text"></textarea>
+            <label for="recipient-name" class="col-form-label">Наименование</label>
+            <input type="text" class="form-control" id="medic-full_name">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Адрес</label>
+            <input type="text" class="form-control" id="medic-address">
+          </div>
+           <div class="form-group">
+            <label for="message-text" class="col-form-label">Телефон</label>
+            <input type="text" class="form-control" id="medic-phone">
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Send message</button>
+        <button type="button" class="btn btn-danger" id="medic__remove">Удалить запись</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-info" id="medic__ok">Ok</button>
       </div>
     </div>
   </div>
 </div>`)
+
+    this.medicModal = $('#medicModal')
   }
 
   rowClick () {
-    $('.medic__row').click(function (event) {
-      console.log($(event.currentTarget).data())
-      $('#exampleModal').modal('show')
+    $('.medic__row').click((event) => {
+      const id = $(event.currentTarget).data().id
+      const hid = $(event.currentTarget).data().hid
+      this.showModal(id, hid)
     })
+  }
+
+  okModalClick () {
+    $('#medic__ok').click((event) => {
+      console.log('Ok')
+      this.medicModal.modal('hide')
+    })
+  }
+
+  showModal (id, hid) {
+    const category = $('#medic-headers')
+    category.empty()
+
+    $(
+      '<option />',
+      {
+        value: 'null',
+        text: 'Без категории',
+      }).appendTo(category)
+
+    this.headers.forEach((elem) => {
+
+      $(
+        '<option />',
+        {
+          value: elem.id,
+          text: elem.full_name,
+        }).appendTo(category)
+    })
+
+    $(`#medic-headers option[value=${hid}]`).attr('selected', 'selected')
+
+    const obj = _.find(this.info, {'id': id + ''})
+    $('#medic-full_name').val(this.isNull(obj.full_name))
+    $('#medic-address').val(this.isNull(obj.address))
+    $('#medic-phone').val(this.isNull(obj.phone))
+
+    this.medicModal.modal('show')
+  }
+
+  isNull (val) {
+    return _.isNull(val) ? '' : val
   }
 }
