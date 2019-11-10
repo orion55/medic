@@ -4,11 +4,13 @@
  */
 class Medic {
   constructor (options) {
+    //Проверяем параметры, переданные в опциях
     if (this.checkIdMedic(options) && this.checkStorage(options)) {
       this.init(options)
     }
   }
 
+  //Проверка параметка идентификатор, куда будет вставляться список
   checkIdMedic (options) {
     if ('idMedic' in options) {
       this.medicForm = $('#' + options.idMedic)
@@ -19,6 +21,7 @@ class Medic {
     return false
   }
 
+  //проверка параметра хранилища
   checkStorage (options) {
     if ('storage' in options) {
       if (typeof options.storage != 'undefined') {
@@ -28,6 +31,7 @@ class Medic {
     return false
   }
 
+  //функция инициализации
   async init (options) {
     this.storage = options.storage
 
@@ -61,8 +65,10 @@ class Medic {
     this.removeModalClickOk()
 
     this.addButton()
+    this.jsonButton()
   }
 
+  //Создание данных в виде двухуровневой иерархии: заголовки и данные
   creatingData () {
     this.treeData = _(this.info).groupBy('hid').value()
     this.headers = []
@@ -91,6 +97,7 @@ class Medic {
     this.headers = _.sortBy(this.headers, ['full_name'])
   }
 
+  //Вывод заголовка таблицы
   displayHead () {
     this.medicForm.prepend(`<div class="medic__control-panel">
                 <button type="button" class="btn btn-info" id="medicAdd"
@@ -114,6 +121,7 @@ class Medic {
             <div class="accordion" id="medicAccordion"></div>`)
   }
 
+  //Вывод "аккордеона" для отображения данных о лечебных учреждениях
   dispalayAccordion () {
     this.medicAccordion = $('#medicAccordion')
     this.medicAccordion.empty()
@@ -252,7 +260,7 @@ class Medic {
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="medicModalLabel">Редактирование записи</h5>
+        <h5 class="modal-title" id="medicModalLabel"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -329,7 +337,7 @@ class Medic {
     $('.medic__row').click((event) => {
       this.id = $(event.currentTarget).data().id
       this.hid = $(event.currentTarget).data().hid
-      this.showModal(this.id, this.hid)
+      this.showModal(this.id, this.hid, 'Редактирование записи')
     })
   }
 
@@ -368,14 +376,25 @@ class Medic {
 
   saveRecord (id, hid) {
     let obj = _.find(this.info, {'id': id + ''})
-    obj.full_name = $('#medic-full_name').val()
-    obj.address = $('#medic-address').val()
-    obj.phone = $('#medic-phone').val()
-    obj.hid = $('#medic-headers option:selected').val() + ''
+    this.hid = $('#medic-headers option:selected').val() + ''
 
+    if (obj !== undefined) {
+      obj.full_name = $('#medic-full_name').val()
+      obj.address = $('#medic-address').val()
+      obj.phone = $('#medic-phone').val()
+      obj.hid = this.hid
+    } else {
+      this.info.push({
+        id: this.id + '',
+        hid: this.hid,
+        full_name: $('#medic-full_name').val(),
+        address: $('#medic-address').val(),
+        phone: $('#medic-phone').val(),
+      })
+    }
     this.storage.save({'LPU': this.info})
 
-    this.refreshRecord(obj.hid)
+    this.refreshRecord(this.hid)
   }
 
   refreshRecord (hid) {
@@ -385,7 +404,7 @@ class Medic {
     this.activateCard(hid)
   }
 
-  showModal (id, hid) {
+  showModal (id, hid, title = '') {
     this.medicFormik.classList.remove('was-validated')
 
     const category = $('#medic-headers')
@@ -411,9 +430,18 @@ class Medic {
     $(`#medic-headers option[value=${hid}]`).attr('selected', 'selected')
 
     const obj = _.find(this.info, {'id': id + ''})
-    $('#medic-full_name').val(this.isNull(obj.full_name))
-    $('#medic-address').val(this.isNull(obj.address))
-    $('#medic-phone').val(this.isNull(obj.phone))
+
+    if (obj !== undefined) {
+      $('#medic-full_name').val(this.isNull(obj.full_name))
+      $('#medic-address').val(this.isNull(obj.address))
+      $('#medic-phone').val(this.isNull(obj.phone))
+    } else {
+      $('#medic-full_name').val('')
+      $('#medic-address').val('')
+      $('#medic-phone').val('')
+    }
+
+    $('#medicModalLabel').text(title)
 
     this.medicModal.modal('show')
   }
@@ -423,9 +451,27 @@ class Medic {
   }
 
   addButton () {
-    $('#medicAdd').click((event) => {
-      console.log(event)
+    $('#medicAdd').click(() => {
+      this.id = _.maxBy(this.info, function (o) { return +o.id }).id + 1
+      this.hid = null
 
+      this.showModal(this.id, this.hid, 'Добавить новую запись')
+    })
+  }
+
+  jsonButton () {
+    $('#medicJson').click(() => {
+      const json = this.storage.get()
+      let a = document.createElement('a')
+      this.medicForm.after(a)
+      a.style = 'display: none'
+      let blob = new Blob([json], {type: 'octet/stream'}),
+        url = window.URL.createObjectURL(blob)
+      a.href = url
+      a.download = '.result.json'
+      a.click()
+      window.URL.revokeObjectURL(url)
+      $(a).remove()
     })
   }
 }

@@ -1,3 +1,7 @@
+/**
+ * Класс работы с LocalStorage
+ * Гребенёв Олег <admin@infoblog72.ru>
+ */
 class LocalSt {
 
   save (data) {
@@ -35,5 +39,9 @@ class LocalSt {
       if (elem.phone !== null) {elem.phone = elem.phone.trim()}
     })
     return {'LPU': info}
+  }
+
+  get () {
+    return localStorage.getItem('json')
   }
 }

@@ -10,6 +10,10 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+/**
+ * Класс работы с LocalStorage
+ * Гребенёв Олег <admin@infoblog72.ru>
+ */
 var LocalSt =
 /*#__PURE__*/
 function () {
@@ -102,6 +106,11 @@ function () {
         'LPU': info
       };
     }
+  }, {
+    key: "get",
+    value: function get() {
+      return localStorage.getItem('json');
+    }
   }]);
 
   return LocalSt;
@@ -109,7 +118,10 @@ function () {
 "use strict";
 
 $(document).ready(function () {
-  var local = new LocalSt();
+  //Точка входа в программу
+  //создаём хранилище, которое работает с LocalStorage
+  var local = new LocalSt(); //Создаем экземпляр класса со сведениями о лечебных учреждениях
+
   new Medic({
     idMedic: 'medicId',
     storage: local
@@ -137,10 +149,12 @@ function () {
   function Medic(options) {
     _classCallCheck(this, Medic);
 
+    //Проверяем параметры, переданные в опциях
     if (this.checkIdMedic(options) && this.checkStorage(options)) {
       this.init(options);
     }
-  }
+  } //Проверка параметка идентификатор, куда будет вставляться список
+
 
   _createClass(Medic, [{
     key: "checkIdMedic",
@@ -154,7 +168,8 @@ function () {
       }
 
       return false;
-    }
+    } //проверка параметра хранилища
+
   }, {
     key: "checkStorage",
     value: function checkStorage(options) {
@@ -165,7 +180,8 @@ function () {
       }
 
       return false;
-    }
+    } //функция инициализации
+
   }, {
     key: "init",
     value: function () {
@@ -211,8 +227,9 @@ function () {
                 this.removeModalClick();
                 this.removeModalClickOk();
                 this.addButton();
+                this.jsonButton();
 
-              case 25:
+              case 26:
               case "end":
                 return _context.stop();
             }
@@ -225,7 +242,8 @@ function () {
       }
 
       return init;
-    }()
+    }() //Создание данных в виде двухуровневой иерархии: заголовки и данные
+
   }, {
     key: "creatingData",
     value: function creatingData() {
@@ -258,12 +276,14 @@ function () {
       }
 
       this.headers = _.sortBy(this.headers, ['full_name']);
-    }
+    } //Вывод заголовка таблицы
+
   }, {
     key: "displayHead",
     value: function displayHead() {
       this.medicForm.prepend("<div class=\"medic__control-panel\">\n                <button type=\"button\" class=\"btn btn-info\" id=\"medicAdd\"\n                        title=\"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0437\u0430\u043F\u0438\u0441\u044C\"><i class=\"fas fa-plus\"></i></button>\n                <button type=\"button\" class=\"btn btn-info\" id=\"medicAllDown\"\n                        title=\"\u0421\u0432\u0435\u0440\u043D\u0443\u0442\u044C\\\u0440\u0430\u0437\u0432\u0435\u0440\u043D\u0443\u0442\u044C \u0432\u0441\u0451\"><i\n                        class=\"fas fa-angle-double-down\"></i></button>\n                <button type=\"button\" class=\"btn btn-info\" id=\"medicJson\"\n                        title=\"\u0421\u043A\u0430\u0447\u0430\u0442\u044C json\"><i\n                        class=\"fas fa-download\"></i></button>\n            </div>\n            <table class=\"table table-hover table-bordered medic__table\">\n                <thead>\n                <tr>\n                    <th scope=\"col\" class=\"medic-col-1\">\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435</th>\n                    <th scope=\"col\" class=\"medic-col-2\">\u0410\u0434\u0440\u0435\u0441</th>\n                    <th scope=\"col\" class=\"medic-col-3\">\u0422\u0435\u043B\u0435\u0444\u043E\u043D</th>\n                </tr>\n                </thead>\n            </table>\n            <div class=\"accordion\" id=\"medicAccordion\"></div>");
-    }
+    } //Вывод "аккордеона" для отображения данных о лечебных учреждениях
+
   }, {
     key: "dispalayAccordion",
     value: function dispalayAccordion() {
@@ -356,7 +376,7 @@ function () {
   }, {
     key: "createModal",
     value: function createModal() {
-      this.medicForm.append("<div class=\"modal fade\" id=\"medicModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"medicModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"medicModalLabel\">\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0437\u0430\u043F\u0438\u0441\u0438</h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n        <form id=\"medicFormik\">\n        <div class=\"form-group\">\n            <label for=\"recipient-name\" class=\"col-form-label\">\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F</label>\n            <select class=\"form-control\" id=\"medic-headers\">\n              <option value=\"null\">\u0411\u0435\u0437 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438</option>\n              <option>2</option>\n            </select>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"recipient-name\" class=\"col-form-label\">\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-full_name\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"message-text\" class=\"col-form-label\">\u0410\u0434\u0440\u0435\u0441</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-address\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0430\u0434\u0440\u0435\u0441. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n           <div class=\"form-group\">\n            <label for=\"message-text\" class=\"col-form-label\">\u0422\u0435\u043B\u0435\u0444\u043E\u043D</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-phone\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0442\u0435\u043B\u0435\u0444\u043E\u043D. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n        </form>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-danger\" id=\"medic__remove\">\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0437\u0430\u043F\u0438\u0441\u044C</button>\n        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">\u041E\u0442\u043C\u0435\u043D\u0430</button>\n        <button type=\"button\" class=\"btn btn-info\" id=\"medic__ok\">Ok</button>\n      </div>\n    </div>\n  </div>\n</div>");
+      this.medicForm.append("<div class=\"modal fade\" id=\"medicModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"medicModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"medicModalLabel\"></h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n        <form id=\"medicFormik\">\n        <div class=\"form-group\">\n            <label for=\"recipient-name\" class=\"col-form-label\">\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F</label>\n            <select class=\"form-control\" id=\"medic-headers\">\n              <option value=\"null\">\u0411\u0435\u0437 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438</option>\n              <option>2</option>\n            </select>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"recipient-name\" class=\"col-form-label\">\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-full_name\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"message-text\" class=\"col-form-label\">\u0410\u0434\u0440\u0435\u0441</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-address\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0430\u0434\u0440\u0435\u0441. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n           <div class=\"form-group\">\n            <label for=\"message-text\" class=\"col-form-label\">\u0422\u0435\u043B\u0435\u0444\u043E\u043D</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-phone\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0442\u0435\u043B\u0435\u0444\u043E\u043D. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n        </form>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-danger\" id=\"medic__remove\">\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0437\u0430\u043F\u0438\u0441\u044C</button>\n        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">\u041E\u0442\u043C\u0435\u043D\u0430</button>\n        <button type=\"button\" class=\"btn btn-info\" id=\"medic__ok\">Ok</button>\n      </div>\n    </div>\n  </div>\n</div>");
       this.medicModal = $('#medicModal');
       this.medicFormik = $('#medicFormik')[0];
     }
@@ -375,7 +395,7 @@ function () {
         _this2.id = $(event.currentTarget).data().id;
         _this2.hid = $(event.currentTarget).data().hid;
 
-        _this2.showModal(_this2.id, _this2.hid);
+        _this2.showModal(_this2.id, _this2.hid, 'Редактирование записи');
       });
     }
   }, {
@@ -439,14 +459,27 @@ function () {
         'id': id + ''
       });
 
-      obj.full_name = $('#medic-full_name').val();
-      obj.address = $('#medic-address').val();
-      obj.phone = $('#medic-phone').val();
-      obj.hid = $('#medic-headers option:selected').val() + '';
+      this.hid = $('#medic-headers option:selected').val() + '';
+
+      if (obj !== undefined) {
+        obj.full_name = $('#medic-full_name').val();
+        obj.address = $('#medic-address').val();
+        obj.phone = $('#medic-phone').val();
+        obj.hid = this.hid;
+      } else {
+        this.info.push({
+          id: this.id + '',
+          hid: this.hid,
+          full_name: $('#medic-full_name').val(),
+          address: $('#medic-address').val(),
+          phone: $('#medic-phone').val()
+        });
+      }
+
       this.storage.save({
         'LPU': this.info
       });
-      this.refreshRecord(obj.hid);
+      this.refreshRecord(this.hid);
     }
   }, {
     key: "refreshRecord",
@@ -459,6 +492,7 @@ function () {
   }, {
     key: "showModal",
     value: function showModal(id, hid) {
+      var title = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
       this.medicFormik.classList.remove('was-validated');
       var category = $('#medic-headers');
       category.empty();
@@ -478,9 +512,17 @@ function () {
         'id': id + ''
       });
 
-      $('#medic-full_name').val(this.isNull(obj.full_name));
-      $('#medic-address').val(this.isNull(obj.address));
-      $('#medic-phone').val(this.isNull(obj.phone));
+      if (obj !== undefined) {
+        $('#medic-full_name').val(this.isNull(obj.full_name));
+        $('#medic-address').val(this.isNull(obj.address));
+        $('#medic-phone').val(this.isNull(obj.phone));
+      } else {
+        $('#medic-full_name').val('');
+        $('#medic-address').val('');
+        $('#medic-phone').val('');
+      }
+
+      $('#medicModalLabel').text(title);
       this.medicModal.modal('show');
     }
   }, {
@@ -491,8 +533,39 @@ function () {
   }, {
     key: "addButton",
     value: function addButton() {
-      $('#medicAdd').click(function (event) {
-        console.log(event);
+      var _this6 = this;
+
+      $('#medicAdd').click(function () {
+        _this6.id = _.maxBy(_this6.info, function (o) {
+          return +o.id;
+        }).id + 1;
+        _this6.hid = null;
+
+        _this6.showModal(_this6.id, _this6.hid, 'Добавить новую запись');
+      });
+    }
+  }, {
+    key: "jsonButton",
+    value: function jsonButton() {
+      var _this7 = this;
+
+      $('#medicJson').click(function () {
+        var json = _this7.storage.get();
+
+        var a = document.createElement('a');
+
+        _this7.medicForm.after(a);
+
+        a.style = 'display: none';
+        var blob = new Blob([json], {
+          type: 'octet/stream'
+        }),
+            url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = '.result.json';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        $(a).remove();
       });
     }
   }]);
