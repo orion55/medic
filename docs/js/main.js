@@ -295,7 +295,8 @@ function () {
       this.headers.forEach(function (elem) {
         _this.displayCard(elem.id);
       });
-    }
+    } //Отображение карточки категории лечебного учреждения
+
   }, {
     key: "displayCard",
     value: function displayCard(id) {
@@ -316,7 +317,8 @@ function () {
       this.medicAccordion.append("<div class=\"card\" id=\"card-".concat(id, "\">\n        <div class=\"card-header medic__header medic__card\" id=\"heading-").concat(id, "\">\n            <table class=\"table table-hover table-bordered medic__table medic__header\"><thead>\n                <tr class=\"mb-0 medic__title-card\" data-toggle=\"collapse\"\n                    data-target=\"#collapse-").concat(id, "\" aria-expanded=\"true\"\n                    aria-controls=\"collapse-").concat(id, "\">\n                    <td class=\"medic-col-1\">\n                        <i class=\"fas fa-chevron-down medic__fas\"></i>").concat(obj.full_name !== null ? obj.full_name : '', "\n                    </td>\n                    <td class=\"medic-col-2\">").concat(obj.address !== null ? obj.address : '', "</td>\n                    <td class=\"medic-col-3\">").concat(obj.phone !== null ? obj.phone : '', "</td>\n                </tr>\n                </thead>\n            </table>\n        </div>"));
       this.displayCardBody(id);
       this.medicAccordion.last("</div>");
-    }
+    } //Отображение тела карточки лечебного учреждения
+
   }, {
     key: "displayCardBody",
     value: function displayCardBody(hid) {
@@ -328,12 +330,14 @@ function () {
         curTable.append("<tr class=\"medic__row\" data-id=\"".concat(elem.id, "\" data-hid=\"").concat(hid, "\" >\n                        <td class=\"medic-col-1\">").concat(elem.full_name !== null ? elem.full_name : '', "</td>\n                        <td class=\"medic-col-2\">").concat(elem.address !== null ? elem.address : '', "</td>\n                        <td class=\"medic-col-3\">").concat(elem.phone !== null ? elem.phone : '', "</td>\n                    </tr>"));
       });
       curCard.last("</tbody></table>\n            </div>\n        </div>");
-    }
+    } //Активация нужного раздела
+
   }, {
     key: "activateCard",
     value: function activateCard(hid) {
       $("#collapse-".concat(hid)).addClass('show');
-    }
+    } //Добавление стрелочек вверх и вниз у категории
+
   }, {
     key: "chevron",
     value: function chevron() {
@@ -345,7 +349,8 @@ function () {
       }).on('hide.bs.collapse', function () {
         $(this).prev('.card-header').find('.fas').removeClass('fa-chevron-up').addClass('fa-chevron-down');
       });
-    }
+    } //Реализация кнопки раскрыть\закрыть всё
+
   }, {
     key: "allDown",
     value: function allDown() {
@@ -372,20 +377,23 @@ function () {
           });
         }
       });
-    }
+    } //Создание модального окна редактирование\создание новой записи
+
   }, {
     key: "createModal",
     value: function createModal() {
       this.medicForm.append("<div class=\"modal fade\" id=\"medicModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"medicModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"medicModalLabel\"></h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n        <form id=\"medicFormik\">\n        <div class=\"form-group\">\n            <label for=\"recipient-name\" class=\"col-form-label\">\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F</label>\n            <select class=\"form-control\" id=\"medic-headers\">\n              <option value=\"null\">\u0411\u0435\u0437 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438</option>\n              <option>2</option>\n            </select>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"recipient-name\" class=\"col-form-label\">\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-full_name\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"message-text\" class=\"col-form-label\">\u0410\u0434\u0440\u0435\u0441</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-address\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0430\u0434\u0440\u0435\u0441. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n           <div class=\"form-group\">\n            <label for=\"message-text\" class=\"col-form-label\">\u0422\u0435\u043B\u0435\u0444\u043E\u043D</label>\n            <input type=\"text\" class=\"form-control\" id=\"medic-phone\" required>\n             <div class=\"invalid-feedback\">\n                \u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0442\u0435\u043B\u0435\u0444\u043E\u043D. \u042D\u0442\u043E \u043F\u043E\u043B\u0435 \u043D\u0435 \u043F\u0443\u0441\u0442\u043E\u0435.\n              </div>\n          </div>\n        </form>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-danger\" id=\"medic__remove\">\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0437\u0430\u043F\u0438\u0441\u044C</button>\n        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">\u041E\u0442\u043C\u0435\u043D\u0430</button>\n        <button type=\"button\" class=\"btn btn-info\" id=\"medic__ok\">Ok</button>\n      </div>\n    </div>\n  </div>\n</div>");
       this.medicModal = $('#medicModal');
       this.medicFormik = $('#medicFormik')[0];
-    }
+    } //Создание модального окна для подтверждения удаления записи
+
   }, {
     key: "createDialog",
     value: function createDialog() {
       this.medicForm.append("<div class=\"modal fade\" id=\"medicDialog\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"medicDialogLabel\" aria-hidden=\"true\">\n      <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\n        <div class=\"modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"medicDialogLabel\">\u0412\u044B \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0442\u0435\u043B\u044C\u043D\u043E \u0445\u043E\u0442\u0438\u0442\u0435 \u0443\u0434\u0430\u043B\u0438\u0442\u044C \u0437\u0430\u043F\u0438\u0441\u044C?</h5>\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n              <span aria-hidden=\"true\">&times;</span>\n            </button>\n          </div>\n          <div class=\"modal-body\" id=\"medic__dialog-body\">\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">\u041E\u0442\u043C\u0435\u043D\u0430</button>\n            <button type=\"button\" class=\"btn btn-danger\" id=\"medic__dialog-ok\">Ok</button>\n          </div>\n        </div>\n      </div>\n    </div>");
       this.medicDialog = $('#medicDialog');
-    }
+    } //Реализации события клика на строку таблицы
+
   }, {
     key: "rowClick",
     value: function rowClick() {
@@ -397,7 +405,8 @@ function () {
 
         _this2.showModal(_this2.id, _this2.hid, 'Редактирование записи');
       });
-    }
+    } //Реализации подтверждения редактирования\создания записи с валидацией
+
   }, {
     key: "okModalClick",
     value: function okModalClick() {
@@ -415,7 +424,8 @@ function () {
 
         _this3.medicFormik.classList.add('was-validated');
       });
-    }
+    } //Вывод окна с подтверждением удаления записи
+
   }, {
     key: "removeModalClick",
     value: function removeModalClick() {
@@ -432,7 +442,8 @@ function () {
 
         _this4.medicDialog.modal('show');
       });
-    }
+    } //Подтверждение удаления записи
+
   }, {
     key: "removeModalClickOk",
     value: function removeModalClickOk() {
@@ -451,7 +462,8 @@ function () {
 
         _this5.refreshRecord(_this5.hid);
       });
-    }
+    } //Изменение сущетсвующей или создание новой записи
+
   }, {
     key: "saveRecord",
     value: function saveRecord(id, hid) {
@@ -480,7 +492,8 @@ function () {
         'LPU': this.info
       });
       this.refreshRecord(this.hid);
-    }
+    } //Обновление при изменении\добавлении\удалении записи
+
   }, {
     key: "refreshRecord",
     value: function refreshRecord(hid) {
@@ -488,7 +501,8 @@ function () {
       this.dispalayAccordion();
       this.rowClick();
       this.activateCard(hid);
-    }
+    } //Заполнение полей и показ модального окна о редактировании\создании записи
+
   }, {
     key: "showModal",
     value: function showModal(id, hid) {
@@ -524,12 +538,14 @@ function () {
 
       $('#medicModalLabel').text(title);
       this.medicModal.modal('show');
-    }
+    } //Проверка на null и вывод или пустой строки или самого значения
+
   }, {
     key: "isNull",
     value: function isNull(val) {
       return _.isNull(val) ? '' : val;
-    }
+    } //Реализация кнопки создания новой записи
+
   }, {
     key: "addButton",
     value: function addButton() {
@@ -543,7 +559,8 @@ function () {
 
         _this6.showModal(_this6.id, _this6.hid, 'Добавить новую запись');
       });
-    }
+    } //Реализация кнопки сохранения в json
+
   }, {
     key: "jsonButton",
     value: function jsonButton() {

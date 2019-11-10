@@ -131,6 +131,7 @@ class Medic {
     })
   }
 
+  //Отображение карточки категории лечебного учреждения
   displayCard (id) {
     let obj
     if (id !== null) {
@@ -167,6 +168,7 @@ class Medic {
 
   }
 
+  //Отображение тела карточки лечебного учреждения
   displayCardBody (hid) {
     let arr = this.treeData[hid]
     let curCard = $(`#card-${hid}`)
@@ -192,10 +194,12 @@ class Medic {
 
   }
 
+  //Активация нужного раздела
   activateCard (hid) {
     $(`#collapse-${hid}`).addClass('show')
   }
 
+  //Добавление стрелочек вверх и вниз у категории
   chevron () {
     $('.collapse.show').each(function () {
       $(this)
@@ -220,6 +224,7 @@ class Medic {
     })
   }
 
+  //Реализация кнопки раскрыть\закрыть всё
   allDown () {
     $('#medicAllDown').click(function () {
       let btn = $(this).find('.fas')
@@ -255,6 +260,7 @@ class Medic {
     })
   }
 
+  //Создание модального окна редактирование\создание новой записи
   createModal () {
     this.medicForm.append(`<div class="modal fade" id="medicModal" tabindex="-1" role="dialog" aria-labelledby="medicModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -310,6 +316,7 @@ class Medic {
     this.medicFormik = $('#medicFormik')[0]
   }
 
+  //Создание модального окна для подтверждения удаления записи
   createDialog () {
     this.medicForm.append(`<div class="modal fade" id="medicDialog" tabindex="-1" role="dialog" aria-labelledby="medicDialogLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -333,6 +340,7 @@ class Medic {
     this.medicDialog = $('#medicDialog')
   }
 
+  //Реализации события клика на строку таблицы
   rowClick () {
     $('.medic__row').click((event) => {
       this.id = $(event.currentTarget).data().id
@@ -341,6 +349,7 @@ class Medic {
     })
   }
 
+  //Реализации подтверждения редактирования\создания записи с валидацией
   okModalClick () {
     $('#medic__ok').click((event) => {
       if (!this.medicFormik.checkValidity()) {
@@ -354,6 +363,7 @@ class Medic {
     })
   }
 
+  //Вывод окна с подтверждением удаления записи
   removeModalClick () {
     $('#medic__remove').click((event) => {
       this.medicModal.modal('hide')
@@ -365,6 +375,7 @@ class Medic {
     })
   }
 
+  //Подтверждение удаления записи
   removeModalClickOk () {
     $('#medic__dialog-ok').click(() => {
       this.info.splice(_.findIndex(this.info, {'id': this.id + ''}), 1)
@@ -374,6 +385,7 @@ class Medic {
     })
   }
 
+  //Изменение сущетсвующей или создание новой записи
   saveRecord (id, hid) {
     let obj = _.find(this.info, {'id': id + ''})
     this.hid = $('#medic-headers option:selected').val() + ''
@@ -397,6 +409,7 @@ class Medic {
     this.refreshRecord(this.hid)
   }
 
+  //Обновление при изменении\добавлении\удалении записи
   refreshRecord (hid) {
     this.creatingData()
     this.dispalayAccordion()
@@ -404,6 +417,7 @@ class Medic {
     this.activateCard(hid)
   }
 
+  //Заполнение полей и показ модального окна о редактировании\создании записи
   showModal (id, hid, title = '') {
     this.medicFormik.classList.remove('was-validated')
 
@@ -446,10 +460,12 @@ class Medic {
     this.medicModal.modal('show')
   }
 
+  //Проверка на null и вывод или пустой строки или самого значения
   isNull (val) {
     return _.isNull(val) ? '' : val
   }
 
+  //Реализация кнопки создания новой записи
   addButton () {
     $('#medicAdd').click(() => {
       this.id = _.maxBy(this.info, function (o) { return +o.id }).id + 1
@@ -459,6 +475,7 @@ class Medic {
     })
   }
 
+  //Реализация кнопки сохранения в json
   jsonButton () {
     $('#medicJson').click(() => {
       const json = this.storage.get()
